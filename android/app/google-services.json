@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1094765821310",
+    "project_id": "chatting-app-5de5b",
+    "storage_bucket": "chatting-app-5de5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094765821310:android:c7b60290f2f5ce68fc872f",
+        "android_client_info": {
+          "package_name": "com.tenriver.chatting_app_using_fb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094765821310-plgghv86qp0ukpb17nk7d3net8mbo9kg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_KJhmiimoHjKH-G8kDWCIzVdLcJbAz_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094765821310-plgghv86qp0ukpb17nk7d3net8mbo9kg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1094765821310-utqjbgadkhjd46elae9onulvmgijc8u9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tenriver.chattingAppUsingFb"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
