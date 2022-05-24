@@ -23,7 +23,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             left: 0,
             child: Container(
               height: 300,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('image/red.jpg'),
                   fit: BoxFit.fill,
@@ -38,14 +38,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       RichText(
                         text: TextSpan(
                           text: 'Welcome',
-                          style: TextStyle(
+                          style: const TextStyle(
                               letterSpacing: 1.0,
                               fontSize: 25,
                               color: Colors.white),
                           children: [
                             TextSpan(
-                              text: ' to Yummy chat',
-                              style: TextStyle(
+                              text: isSignupScreen? ' to Yummy chat' : ' back',
+                              style: const TextStyle(
                                   letterSpacing: 1.0,
                                   fontSize: 25,
                                   color: Colors.white,
@@ -54,12 +54,12 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5.0,
                       ),
                       Text(
-                        'Signup to continue',
-                        style: TextStyle(
+                        isSignupScreen? 'Signup to continue' : 'Signin to continue',
+                        style: const TextStyle(
                           letterSpacing: 1.0,
                           color: Colors.white,
                         ),
@@ -71,11 +71,15 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             ),
           ),
           //배경을 위한 Positioned
-          Positioned(
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
             top: 180,
-            child: Container(
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeIn,
               padding: const EdgeInsets.all(20),
-              height: 280,
+              height: isSignupScreen? 280 : 250,
               width: MediaQuery.of(context).size.width - 40,
               margin: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -148,6 +152,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       ),
                     ],
                   ),
+                  if(isSignupScreen)
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Form(
@@ -195,7 +200,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           TextFormField(
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.account_circle,
+                                Icons.email,
                                 color: Palette.iconColor,
                               ),
                               // 초기상태 border
@@ -220,7 +225,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                   ),
                                 ),
                               ),
-                              hintText: 'User name',
+                              hintText: 'email',
                               hintStyle: TextStyle(
                                 fontSize: 14,
                                 color: Palette.textColor1,
@@ -234,7 +239,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           TextFormField(
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.account_circle,
+                                Icons.password,
                                 color: Palette.iconColor,
                               ),
                               // 초기상태 border
@@ -259,7 +264,92 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                   ),
                                 ),
                               ),
-                              hintText: 'User name',
+                              hintText: 'password',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Palette.textColor1,
+                              ),
+                              contentPadding: EdgeInsets.all(10),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if(!isSignupScreen)
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Form(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Palette.iconColor,
+                              ),
+                              // 초기상태 border
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.textColor1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    (35),
+                                  ),
+                                ),
+                              ),
+                              // 포커스가 되었을 때 border
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.textColor1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    (35),
+                                  ),
+                                ),
+                              ),
+                              hintText: 'email',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Palette.textColor1,
+                              ),
+                              contentPadding: EdgeInsets.all(10),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.password,
+                                color: Palette.iconColor,
+                              ),
+                              // 초기상태 border
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.textColor1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    (35),
+                                  ),
+                                ),
+                              ),
+                              // 포커스가 되었을 때 border
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.textColor1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    (35),
+                                  ),
+                                ),
+                              ),
+                              hintText: 'password',
                               hintStyle: TextStyle(
                                 fontSize: 14,
                                 color: Palette.textColor1,
@@ -276,8 +366,10 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             ),
           ),
           //텍스트 폼 필드를 위한 Positioned
-          Positioned(
-            top: 430,
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            top: isSignupScreen? 430 : 390,
             right: 0,
             left: 0,
             child: Center(
@@ -321,7 +413,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             right: 0,
             child: Column(
               children: [
-                Text('or Signup with'),
+                Text(isSignupScreen? 'or Signup with' : 'or Signin with'),
                 TextButton.icon(
                     onPressed: (){
 
@@ -339,6 +431,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
               ],
             ),
           ),
+          //구글 로그인을 위한 Positioned
         ],
       ),
     );
