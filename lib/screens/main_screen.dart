@@ -1,5 +1,7 @@
 import 'package:chatting_app_using_fb/config/palette.dart';
+import 'package:chatting_app_using_fb/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   const LoginSignUpScreen({Key? key}) : super(key: key);
@@ -9,15 +11,17 @@ class LoginSignUpScreen extends StatefulWidget {
 }
 
 class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
+  final _authentication = FirebaseAuth.instance;
   bool isSignupScreen = true;
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  String userEmail ='';
+  String userEmail = '';
   String userPassword = '';
 
+  // Validation 기능 실행을 위한 함수
   void _tryValidation() {
     final isValid = _formKey.currentState!.validate();
-    if(isValid){
+    if (isValid) {
       _formKey.currentState!.save();
     }
   }
@@ -27,7 +31,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Stack(
@@ -59,7 +63,8 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                 color: Colors.white),
                             children: [
                               TextSpan(
-                                text: isSignupScreen? ' to Yummy chat' : ' back',
+                                text:
+                                    isSignupScreen ? ' to Yummy chat' : ' back',
                                 style: const TextStyle(
                                     letterSpacing: 1.0,
                                     fontSize: 25,
@@ -73,7 +78,9 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           height: 5.0,
                         ),
                         Text(
-                          isSignupScreen? 'Signup to continue' : 'Signin to continue',
+                          isSignupScreen
+                              ? 'Signup to continue'
+                              : 'Signin to continue',
                           style: const TextStyle(
                             letterSpacing: 1.0,
                             color: Colors.white,
@@ -94,7 +101,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 duration: Duration(milliseconds: 500),
                 curve: Curves.easeIn,
                 padding: const EdgeInsets.all(20),
-                height: isSignupScreen? 280 : 250,
+                height: isSignupScreen ? 280 : 250,
                 width: MediaQuery.of(context).size.width - 40,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
@@ -169,268 +176,286 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           ),
                         ],
                       ),
-                      if(isSignupScreen)
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                key: ValueKey(1),
-                                validator: (value){
-                                  if(value!.isEmpty || value.length < 4) {
-                                    return 'Please enter at least 4 characters';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value){
-                                  userName = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.account_circle,
-                                    color: Palette.iconColor,
-                                  ),
-                                  // 초기상태 border
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
+                      if (isSignupScreen)
+                        Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  key: ValueKey(1),
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 4) {
+                                      return 'Please enter at least 4 characters';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    userName = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userName = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.account_circle,
+                                      color: Palette.iconColor,
                                     ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 초기상태 border
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // 포커스가 되었을 때 border
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 포커스가 되었을 때 border
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
+                                    hintText: 'User name',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textColor1,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
                                   ),
-                                  hintText: 'User name',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Palette.textColor1,
-                                  ),
-                                  contentPadding: EdgeInsets.all(10),
                                 ),
-
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                key: ValueKey(2),
-                                validator: (value){
-                                  if(value!.isEmpty || !value.contains('@')){
-                                    return 'Please enter a valid email address.';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value){
-                                  userEmail = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Palette.iconColor,
-                                  ),
-                                  // 초기상태 border
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
-                                      ),
-                                    ),
-                                  ),
-                                  // 포커스가 되었을 때 border
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
-                                      ),
-                                    ),
-                                  ),
-                                  hintText: 'email',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Palette.textColor1,
-                                  ),
-                                  contentPadding: EdgeInsets.all(10),
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                key: ValueKey(3),
-                                validator: (value){
-                                  if(value!.isEmpty || value.length<6){
-                                    return 'Password must be at least 7 characters long.';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value){
-                                  userPassword = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.password,
-                                    color: Palette.iconColor,
-                                  ),
-                                  // 초기상태 border
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
+                                TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  key: ValueKey(2),
+                                  validator: (value) {
+                                    if (value!.isEmpty ||
+                                        !value.contains('@')) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    userEmail = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userEmail = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Palette.iconColor,
                                     ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 초기상태 border
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // 포커스가 되었을 때 border
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 포커스가 되었을 때 border
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
+                                    hintText: 'email',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textColor1,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
                                   ),
-                                  hintText: 'password',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Palette.textColor1,
-                                  ),
-                                  contentPadding: EdgeInsets.all(10),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextFormField(
+                                  obscureText: true,
+                                  key: ValueKey(3),
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 6) {
+                                      return 'Password must be at least 7 characters long.';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    userPassword = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userPassword = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.password,
+                                      color: Palette.iconColor,
+                                    ),
+                                    // 초기상태 border
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
+                                      ),
+                                    ),
+                                    // 포커스가 되었을 때 border
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
+                                      ),
+                                    ),
+                                    hintText: 'password',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textColor1,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      if(!isSignupScreen)
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                key: ValueKey(4),
-                                validator: (value){
-                                  if(value!.isEmpty || !value.contains('@')){
-                                    return 'Please enter a valid email address.';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value){
-                                  userEmail = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Palette.iconColor,
-                                  ),
-                                  // 초기상태 border
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
+                      if (!isSignupScreen)
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  key: ValueKey(4),
+                                  validator: (value) {
+                                    if (value!.isEmpty ||
+                                        !value.contains('@')) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    userEmail = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userEmail = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Palette.iconColor,
                                     ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 초기상태 border
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // 포커스가 되었을 때 border
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
+                                    // 포커스가 되었을 때 border
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
                                       ),
                                     ),
+                                    hintText: 'email',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textColor1,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
                                   ),
-                                  hintText: 'email',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Palette.textColor1,
-                                  ),
-                                  contentPadding: EdgeInsets.all(10),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                key: ValueKey(5),
-                                validator: (value){
-                                  if(value!.isEmpty || value.length<6){
-                                    return 'Password must be at least 7 characters long.';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value){
-                                  userPassword = value!;
-                                },
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.password,
-                                    color: Palette.iconColor,
-                                  ),
-                                  // 초기상태 border
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
-                                      ),
-                                    ),
-                                  ),
-                                  // 포커스가 되었을 때 border
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.textColor1,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        (35),
-                                      ),
-                                    ),
-                                  ),
-                                  hintText: 'password',
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Palette.textColor1,
-                                  ),
-                                  contentPadding: EdgeInsets.all(10),
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                              ),
-                            ],
+                                TextFormField(
+                                  key: ValueKey(5),
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 6) {
+                                      return 'Password must be at least 7 characters long.';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    userPassword = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userPassword = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.password,
+                                      color: Palette.iconColor,
+                                    ),
+                                    // 초기상태 border
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
+                                      ),
+                                    ),
+                                    // 포커스가 되었을 때 border
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.textColor1,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          (35),
+                                        ),
+                                      ),
+                                    ),
+                                    hintText: 'password',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.textColor1,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
+                        )
                     ],
                   ),
                 ),
@@ -440,7 +465,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             AnimatedPositioned(
               duration: Duration(milliseconds: 500),
               curve: Curves.easeIn,
-              top: isSignupScreen? 430 : 390,
+              top: isSignupScreen ? 430 : 390,
               right: 0,
               left: 0,
               child: Center(
@@ -453,8 +478,40 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: GestureDetector(
-                    onTap: (){
-                      _tryValidation();
+                    onTap: () async {
+                      if (isSignupScreen) {
+                        _tryValidation();
+                        try {
+                          final newUser = await _authentication
+                              .createUserWithEmailAndPassword(
+                            email: userEmail,
+                            password: userPassword,
+                          );
+
+                          if (newUser.user != null) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChatScreen()));
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      }
+                      if (!isSignupScreen) {
+                        _tryValidation();
+                        try {
+                          final newUser =
+                          await _authentication.signInWithEmailAndPassword(
+                            email: userEmail,
+                            password: userPassword,
+                          );
+                          if (newUser.user != null) {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => ChatScreen()));
+                          }
+                        } catch(e) {
+                          print(e);
+                        }
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -486,17 +543,16 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             AnimatedPositioned(
               duration: Duration(milliseconds: 500),
               curve: Curves.easeIn,
-              top: isSignupScreen? MediaQuery.of(context).size.height - 125
-              :MediaQuery.of(context).size.height - 165,
+              top: isSignupScreen
+                  ? MediaQuery.of(context).size.height - 125
+                  : MediaQuery.of(context).size.height - 165,
               left: 0,
               right: 0,
               child: Column(
                 children: [
-                  Text(isSignupScreen? 'or Signup with' : 'or Signin with'),
+                  Text(isSignupScreen ? 'or Signup with' : 'or Signin with'),
                   TextButton.icon(
-                      onPressed: (){
-
-                      },
+                    onPressed: () {},
                     style: TextButton.styleFrom(
                       primary: Colors.white,
                       minimumSize: Size(155, 40),
@@ -505,8 +561,9 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       ),
                       backgroundColor: Palette.googleColor,
                     ),
-                      icon: Icon(Icons.add),
-                      label: Text('Google'),),
+                    icon: Icon(Icons.add),
+                    label: Text('Google'),
+                  ),
                 ],
               ),
             ),
