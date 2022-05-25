@@ -522,8 +522,8 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                               password: userPassword,
                             );
                             if (newUser.user != null) {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => ChatScreen()));
+                              // Navigator.push(context, MaterialPageRoute(
+                              //     builder: (context) => ChatScreen()));
                               setState((){
                                 showSpinner = false;
                               });
