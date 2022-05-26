@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatting_app_using_fb/add_image/add_image.dart';
 import 'package:chatting_app_using_fb/config/palette.dart';
 import 'package:chatting_app_using_fb/screens/chat_screen.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   const LoginSignUpScreen({Key? key}) : super(key: key);
@@ -21,6 +24,11 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   String userName = '';
   String userEmail = '';
   String userPassword = '';
+  File? userPickedImage;
+
+  void pickedImage(File image) {
+    userPickedImage = image;
+  }
 
   // Validation 기능 실행을 위한 함수
   void _tryValidation() {
@@ -36,7 +44,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
         builder: (context) {
           return Dialog(
             backgroundColor: Colors.white,
-            child: AddImage(),
+            child: AddImage(pickedImage),
           );
         });
   }
@@ -187,17 +195,18 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       SizedBox(
                                         width: 15,
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showAlert(context);
-                                        },
-                                        child: Icon(
-                                          Icons.image,
-                                          color: isSignupScreen
-                                              ? Colors.cyan
-                                              : Colors.grey[300],
-                                        ),
-                                      )
+                                      if (isSignupScreen)
+                                        GestureDetector(
+                                          onTap: () {
+                                            showAlert(context);
+                                          },
+                                          child: Icon(
+                                            Icons.image,
+                                            color: isSignupScreen
+                                                ? Colors.cyan
+                                                : Colors.grey[300],
+                                          ),
+                                        )
                                     ],
                                   ),
                                   if (isSignupScreen)
@@ -520,6 +529,19 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           showSpinner = true;
                         });
                         if (isSignupScreen) {
+                          if (userPickedImage == null) {
+                            setState(() {
+                              showSpinner = false;
+                            });
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please pick your image'),
+                                backgroundColor: Colors.blue,
+                              ),
+                            );
+                            return;
+                          }
                           _tryValidation();
                           try {
                             final newUser = await _authentication
@@ -528,11 +550,23 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                               password: userPassword,
                             );
 
+                            // 하나의 클라우드 스토리 버킷을 참조
+                            final refImage = FirebaseStorage.instance
+                                .ref()
+                                .child('picked_image')
+                                .child(newUser.user!.uid + '.png');
+
+                            await refImage.putFile(userPickedImage!);
+                            final url = await refImage.getDownloadURL();
+
                             await FirebaseFirestore.instance
                                 .collection('user')
                                 .doc(newUser.user!.uid)
-                                .set(
-                                    {'userName': userName, 'email': userEmail});
+                                .set({
+                              'userName': userName,
+                              'email': userEmail,
+                              'picked_image' : url,
+                            });
 
                             if (newUser.user != null) {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -543,6 +577,18 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             }
                           } catch (e) {
                             print(e);
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Please check your email and password'),
+                                  backgroundColor: Colors.blue,
+                                ),
+                              );
+                              setState(() {
+                                showSpinner = false;
+                              });
+                            }
                           }
                         }
                         if (!isSignupScreen) {

@@ -4,12 +4,13 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_8.dart';
 
 class ChatBubbles extends StatelessWidget {
-  const ChatBubbles(this.message, this.isMe, this.userName, {Key? key})
+  const ChatBubbles(this.message, this.isMe, this.userName,this.userImage, {Key? key})
       : super(key: key);
 
   final String message;
   final String userName;
   final bool isMe;
+  final String userImage;
 
   @override
   Widget build(BuildContext context) {
