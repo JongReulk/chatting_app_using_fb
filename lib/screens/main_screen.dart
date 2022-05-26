@@ -1,3 +1,4 @@
+import 'package:chatting_app_using_fb/add_image/add_image.dart';
 import 'package:chatting_app_using_fb/config/palette.dart';
 import 'package:chatting_app_using_fb/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,17 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
     if (isValid) {
       _formKey.currentState!.save();
     }
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: AddImage(),
+          );
+        });
   }
 
   @override
@@ -68,8 +80,9 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                   color: Colors.white),
                               children: [
                                 TextSpan(
-                                  text:
-                                      isSignupScreen ? ' to Yummy chat' : ' back',
+                                  text: isSignupScreen
+                                      ? ' to Yummy chat'
+                                      : ' back',
                                   style: const TextStyle(
                                       letterSpacing: 1.0,
                                       fontSize: 25,
@@ -160,18 +173,37 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                               },
                               child: Column(
                                 children: [
-                                  Text(
-                                    'SIGNUP',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: isSignupScreen
-                                            ? Palette.activeColor
-                                            : Palette.textColor1),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'SIGNUP',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: isSignupScreen
+                                                ? Palette.activeColor
+                                                : Palette.textColor1),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showAlert(context);
+                                        },
+                                        child: Icon(
+                                          Icons.image,
+                                          color: isSignupScreen
+                                              ? Colors.cyan
+                                              : Colors.grey[300],
+                                        ),
+                                      )
+                                    ],
                                   ),
                                   if (isSignupScreen)
                                     Container(
-                                      margin: const EdgeInsets.only(top: 3),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 3, 35, 0),
                                       height: 2,
                                       width: 55,
                                       color: Colors.orange,
@@ -484,7 +516,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        setState((){
+                        setState(() {
                           showSpinner = true;
                         });
                         if (isSignupScreen) {
@@ -496,16 +528,16 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                               password: userPassword,
                             );
 
-                            await FirebaseFirestore.instance.collection('user').doc(newUser.user!.uid)
-                            .set({
-                              'userName' : userName,
-                              'email' : userEmail
-                            });
+                            await FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(newUser.user!.uid)
+                                .set(
+                                    {'userName': userName, 'email': userEmail});
 
                             if (newUser.user != null) {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ChatScreen()));
-                              setState((){
+                              setState(() {
                                 showSpinner = false;
                               });
                             }
@@ -516,19 +548,19 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         if (!isSignupScreen) {
                           _tryValidation();
                           try {
-                            final newUser =
-                            await _authentication.signInWithEmailAndPassword(
+                            final newUser = await _authentication
+                                .signInWithEmailAndPassword(
                               email: userEmail,
                               password: userPassword,
                             );
                             if (newUser.user != null) {
                               // Navigator.push(context, MaterialPageRoute(
                               //     builder: (context) => ChatScreen()));
-                              setState((){
+                              setState(() {
                                 showSpinner = false;
                               });
                             }
-                          } catch(e) {
+                          } catch (e) {
                             print(e);
                           }
                         }
