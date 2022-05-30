@@ -1,7 +1,9 @@
+import 'package:chatting_app_using_fb/config/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_8.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatBubbles extends StatelessWidget {
   const ChatBubbles(this.message, this.isMe, this.userName, this.userImage,
@@ -28,7 +30,7 @@ class ChatBubbles extends StatelessWidget {
                   clipper: ChatBubbleClipper8(type: BubbleType.sendBubble),
                   alignment: Alignment.topRight,
                   margin: EdgeInsets.only(top: 20),
-                  backGroundColor: Colors.blue,
+                  backGroundColor: Palette.facebookColor,
                   child: Container(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -40,14 +42,20 @@ class ChatBubbles extends StatelessWidget {
                       children: [
                         Text(
                           userName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                          style: GoogleFonts.itim(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
+                        ),
+                        const SizedBox(
+                          height: 3,
                         ),
                         Text(
                           message,
-                          style: TextStyle(color: Colors.white),
+                          style: GoogleFonts.itim(
+                            textStyle: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ],
                     ),
@@ -72,14 +80,21 @@ class ChatBubbles extends StatelessWidget {
                       children: [
                         Text(
                           userName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                          style: GoogleFonts.itim(
+                            textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 3,
                         ),
                         Text(
                           message,
-                          style: TextStyle(color: Colors.black),
+                          style: GoogleFonts.itim(
+                            textStyle: const TextStyle(color: Palette.textColor3),
+                          ),
                         ),
                       ],
                     ),
@@ -89,12 +104,12 @@ class ChatBubbles extends StatelessWidget {
           ],
         ),
         Positioned(
-            top: 0,
-            right: isMe ? 5 : null,
-            left: isMe ? null : 5,
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(userImage),
-            ),
+          top: 0,
+          right: isMe ? 5 : null,
+          left: isMe ? null : 5,
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(userImage),
+          ),
         )
       ],
     );

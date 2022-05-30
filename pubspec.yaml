@@ -41,6 +41,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.0
   image_picker: ^0.8.5+3
   firebase_storage: ^10.2.16
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,7 @@ import 'package:chatting_app_using_fb/config/palette.dart';
 import 'package:chatting_app_using_fb/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,7 +31,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
     userPickedImage = image;
   }
 
-  // Validation 기능 실행을 위한 함수
+  // Validation 기능 실행을 위한 함수, 텍스트 필드 검사
   void _tryValidation() {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
@@ -66,13 +67,13 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 right: 0,
                 left: 0,
                 child: Container(
-                  height: 300,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('image/red.jpg'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  height: 500,
+                  decoration: const BoxDecoration(color: Palette.facebookColor
+                      // image: DecorationImage(
+                      //   image: AssetImage('image/background.jpg'),
+                      //   fit: BoxFit.cover,
+                      // ),
+                      ),
                   child: Container(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 90, left: 20),
@@ -82,20 +83,23 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           RichText(
                             text: TextSpan(
                               text: 'Welcome',
-                              style: const TextStyle(
-                                  letterSpacing: 1.0,
-                                  fontSize: 25,
-                                  color: Colors.white),
+                              style: GoogleFonts.patrickHandSc(
+                                  textStyle: const TextStyle(
+                                      letterSpacing: 1.0,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                               children: [
                                 TextSpan(
                                   text: isSignupScreen
-                                      ? ' to Yummy chat'
-                                      : ' back',
-                                  style: const TextStyle(
-                                      letterSpacing: 1.0,
-                                      fontSize: 25,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                      ? ' to TENRIVERs chat'
+                                      : ' BACK !',
+                                  style: GoogleFonts.patrickHand(
+                                      textStyle: const TextStyle(
+                                          letterSpacing: 1.0,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white70)),
                                 ),
                               ],
                             ),
@@ -104,14 +108,15 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             height: 5.0,
                           ),
                           Text(
-                            isSignupScreen
-                                ? 'Signup to continue'
-                                : 'Signin to continue',
-                            style: const TextStyle(
-                              letterSpacing: 1.0,
-                              color: Colors.white,
-                            ),
-                          ),
+                              isSignupScreen
+                                  ? 'Signup to continue'
+                                  : 'Signin to continue',
+                              style: GoogleFonts.amaticSc(
+                                  textStyle: const TextStyle(
+                                      letterSpacing: 1.0,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white))),
                         ],
                       ),
                     ),
@@ -168,7 +173,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       margin: const EdgeInsets.only(top: 3),
                                       height: 2,
                                       width: 55,
-                                      color: Colors.orange,
+                                      color: Palette.activeColor,
                                     )
                                 ],
                               ),
@@ -206,7 +211,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                                 ? Colors.cyan
                                                 : Colors.grey[300],
                                           ),
-                                        )
+                                        ),
                                     ],
                                   ),
                                   if (isSignupScreen)
@@ -215,7 +220,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                           0, 3, 35, 0),
                                       height: 2,
                                       width: 55,
-                                      color: Colors.orange,
+                                      color: Palette.activeColor,
                                     )
                                 ],
                               ),
@@ -262,7 +267,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       // 포커스가 되었을 때 border
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Palette.textColor1,
+                                          color: Colors.black,
                                         ),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -316,7 +321,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       // 포커스가 되었을 때 border
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Palette.textColor1,
+                                          color: Colors.black,
                                         ),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -324,7 +329,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                           ),
                                         ),
                                       ),
-                                      hintText: 'email',
+                                      hintText: 'E-mail',
                                       hintStyle: TextStyle(
                                         fontSize: 14,
                                         color: Palette.textColor1,
@@ -369,7 +374,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       // 포커스가 되었을 때 border
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Palette.textColor1,
+                                          color: Colors.black,
                                         ),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -377,7 +382,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                           ),
                                         ),
                                       ),
-                                      hintText: 'password',
+                                      hintText: 'Password',
                                       hintStyle: TextStyle(
                                         fontSize: 14,
                                         color: Palette.textColor1,
@@ -430,7 +435,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       // 포커스가 되었을 때 border
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Palette.textColor1,
+                                          color: Colors.black,
                                         ),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -438,7 +443,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                           ),
                                         ),
                                       ),
-                                      hintText: 'email',
+                                      hintText: 'E-mail',
                                       hintStyle: TextStyle(
                                         fontSize: 14,
                                         color: Palette.textColor1,
@@ -450,6 +455,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                     height: 8,
                                   ),
                                   TextFormField(
+                                    obscureText: true,
                                     key: ValueKey(5),
                                     validator: (value) {
                                       if (value!.isEmpty || value.length < 6) {
@@ -482,7 +488,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                       // 포커스가 되었을 때 border
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: Palette.textColor1,
+                                          color: Colors.black,
                                         ),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -490,7 +496,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                           ),
                                         ),
                                       ),
-                                      hintText: 'password',
+                                      hintText: 'Password',
                                       hintStyle: TextStyle(
                                         fontSize: 14,
                                         color: Palette.textColor1,
@@ -535,8 +541,11 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             });
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Please pick your image'),
+                              const SnackBar(
+                                content: Text(
+                                  'Please pick your image',
+                                  style: TextStyle(fontWeight: FontWeight.bold,),
+                                ),
                                 backgroundColor: Colors.blue,
                               ),
                             );
@@ -554,7 +563,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             final refImage = FirebaseStorage.instance
                                 .ref()
                                 .child('picked_image')
-                                .child(newUser.user!.uid + '.png');
+                                .child('${newUser.user!.uid}.png');
 
                             await refImage.putFile(userPickedImage!);
                             final url = await refImage.getDownloadURL();
@@ -565,7 +574,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                                 .set({
                               'userName': userName,
                               'email': userEmail,
-                              'picked_image' : url,
+                              'picked_image': url,
                             });
 
                             if (newUser.user != null) {
@@ -577,11 +586,15 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             }
                           } catch (e) {
                             print(e);
+                            // mounter => 위젯이 사라지면 false 로 변환
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content: Text(
-                                      'Please check your email and password'),
+                                    'Please check your email and password',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   backgroundColor: Colors.blue,
                                 ),
                               );
@@ -613,8 +626,11 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.orange, Colors.red],
+                          gradient: const LinearGradient(
+                            colors: [
+                              Palette.facebookColor,
+                              Palette.activeColor
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -628,7 +644,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             ),
                           ],
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_forward,
                           color: Colors.white,
                         ),
@@ -639,7 +655,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
               ),
               //확인버튼을 위한 Positioned
               AnimatedPositioned(
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn,
                 top: isSignupScreen
                     ? MediaQuery.of(context).size.height - 125
@@ -653,14 +669,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       onPressed: () {},
                       style: TextButton.styleFrom(
                         primary: Colors.white,
-                        minimumSize: Size(155, 40),
+                        minimumSize: const Size(155, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                         backgroundColor: Palette.googleColor,
                       ),
-                      icon: Icon(Icons.add),
-                      label: Text('Google'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Google'),
                     ),
                   ],
                 ),
