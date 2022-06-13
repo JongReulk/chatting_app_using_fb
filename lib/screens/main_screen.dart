@@ -92,7 +92,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                               children: [
                                 TextSpan(
                                   text: isSignupScreen
-                                      ? ' to TENRIVERs chat'
+                                      ? ' to Ten Message'
                                       : ' BACK !',
                                   style: GoogleFonts.patrickHand(
                                       textStyle: const TextStyle(
@@ -664,24 +664,17 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 right: 0,
                 child: Column(
                   children: [
-                    Text(isSignupScreen ? 'or Signup with' : 'or Signin with'),
-                    TextButton.icon(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: const Size(155, 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        backgroundColor: Palette.googleColor,
-                      ),
-                      icon: const Icon(Icons.add),
-                      label: const Text('Google'),
-                    ),
+                    Text(isSignupScreen ? 'SignUp Needs IMAGE ' : 'Signin with Profile IMAGES',
+                    style: GoogleFonts.patrickHandSc(
+                        textStyle: const TextStyle(
+                            letterSpacing: 1.0,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black)),
+                    )
                   ],
                 ),
               ),
-              //구글 로그인을 위한 Positioned
             ],
           ),
         ),
