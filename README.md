@@ -1,16 +1,5 @@
-# chatting_app_using_fb
+## Flutter 와 Firebase를 연계하여 유저 정보, 채팅 정보등을 저장하고, 로드하였습니다. 회원가입 시 프로필 사진 등록을 위해 ImagePicker를 이용해 갤러리의 사진들을 선택할 수 있게 하였고, 채팅시에는 본인의 메시지인지 상대방의 메시지인지에 따라 메시지의 위치 및 디자인을 바꾸어주었습니다.
 
-Chatting app Using Firebase
+<img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=white"/>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
